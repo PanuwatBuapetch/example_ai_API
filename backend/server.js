@@ -86,15 +86,15 @@ app.post('/api/analyze-file', upload.single('file'), async (req, res) => {
           content: question
         }
       ],
-      max_tokens: 250,
+      max_tokens: 1000,
       temperature: 0.2, // 💡 ปรับเพิ่มขึ้นเล็กน้อยเพื่อให้ AI ยืดหยุ่นในการเชื่อมโยงภาษาไทย
     });
 
     const answer = response.choices[0]?.message?.content;
-
+    const cleanFileName = Buffer.from(file.originalname, 'latin1').toString('utf8');
     return res.json({
       status: 'success',
-      fileName: file.originalname,
+      fileName: cleanFileName,
       answer: answer ? answer.trim() : 'ไม่สามารถประมวลผลคำตอบได้'
     });
 
